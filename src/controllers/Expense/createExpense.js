@@ -5,7 +5,7 @@ const addExpense = async (req, res) => {
   try {
     const { date, amount, category, description } = req.body;
 
-    if (!date || !amount || !category || !description) {
+    if (!date || !amount || !category) {
       return res
         .status(400)
         .send(new ApiResponse(400, null, "Required fields missing"));
