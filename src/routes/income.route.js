@@ -1,8 +1,9 @@
-import { addIncome } from "../controllers/Income/createIncome.js";
 import express from "express";
+import { addIncome } from "../controllers/Income/createIncome.js";
 import { checkAuth } from "../middlewares/auth.middleware.js";
 import { getOneIncome } from "../controllers/Income/getOneIncome.js";
 import { updateIncome } from "../controllers/Income/updateOneIncome.js";
+import { deleteIncome } from "../controllers/Income/deleteIncome.js";
 
 const incomeRouter = express.Router();
 
@@ -14,7 +15,7 @@ incomeRouter
 incomeRouter
   .route("/:id")
   .get(checkAuth, getOneIncome)
-  //   .delete(checkAuth, deleteIncome)
+  .delete(checkAuth, deleteIncome)
   .put(checkAuth, updateIncome);
 
 export { incomeRouter };
