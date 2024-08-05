@@ -3,30 +3,31 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 
 const getAllExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.find({ user: req.user._id }).select(
-      "-user -__v"
-    );
+    const id = req.user._id;
 
-    if (!expenses) {
-      return res
-        .status(404)
-        .send(new ApiResponse(404, null, "No expenses exist"));
+    if (!id) {
+      res.status(400).send(new ApiResponse(400, null, "Invalid ID"));
     }
+    const expense = await Expense.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+    ]);
 
     res
       .status(200)
-      .send(new ApiResponse(200, expenses, "Expense fetched successfully"));
+      .send(
+        new ApiResponse(200, expense, "Total expense fetched successfully!")
+      );
   } catch (error) {
     console.log(error);
+
     res
       .status(500)
-      .send(
-        new ApiResponse(
-          500,
-          error,
-          "Failed to retrieve expense with the provided ID"
-        )
-      );
+      .send(new ApiResponse(500, error, "failed to fetch total expense!"));
   }
 };
 export { getAllExpenses };
