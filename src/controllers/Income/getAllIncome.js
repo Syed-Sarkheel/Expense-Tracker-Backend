@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Income } from "../../models/income.model.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 
@@ -8,7 +9,13 @@ const getAllIncomes = async (req, res) => {
     if (!id) {
       res.status(400).send(new ApiResponse(400, null, "Invalid ID"));
     }
+
     const income = await Income.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(id), // Match documents where the user field equals the user's ID
+        },
+      },
       {
         $group: {
           _id: null,

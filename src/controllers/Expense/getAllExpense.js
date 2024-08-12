@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Expense } from "../../models/expense.model.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 
@@ -10,6 +11,11 @@ const getAllExpenses = async (req, res) => {
     }
 
     const expense = await Expense.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(id), // Match documents where the user field equals the user's ID
+        },
+      },
       {
         $group: {
           _id: null,
