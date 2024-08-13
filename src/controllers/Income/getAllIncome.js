@@ -7,7 +7,7 @@ const getAllIncomes = async (req, res) => {
     const id = req.user._id;
 
     if (!id) {
-      res.status(400).send(new ApiResponse(400, null, "Invalid ID"));
+      return res.status(400).send(new ApiResponse(400, null, "Invalid ID"));
     }
 
     const income = await Income.aggregate([

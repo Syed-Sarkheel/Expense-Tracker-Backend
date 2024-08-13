@@ -9,25 +9,45 @@ const registerUser = async (req, res) => {
     if (!name || !email || !password) {
       return res
         .status(400)
-        .send(new ApiResponse(400, null, "Required Fields Missing"));
+        .send(new ApiResponse(400, null, "Required fields missing"));
     }
 
-    const hashed = await bcrypt.hash(password, 10);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res
+        .status(400)
+        .send(new ApiResponse(400, null, "Invalid email format"));
+    }
 
-    const created = await User.create({
+    const exists = await User.findOne({ email: email });
+
+    if (exists) {
+      return res
+        .status(400)
+        .send(
+          new ApiResponse(
+            400,
+            null,
+            "User with the provided email already exists"
+          )
+        );
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const createdUser = await User.create({
       name,
       email,
-      password: hashed,
+      password: hashedPassword,
     });
 
-    const at = created.generateAccessToken();
+    const accessToken = createdUser.generateAccessToken();
+    const refreshToken = createdUser.generateRefreshToken();
 
-    const rt = created.generateRefreshToken();
+    res.cookie("at", accessToken);
+    res.cookie("rt", refreshToken);
 
-    res.cookie("at", at);
-    res.cookie("rt", rt);
-
-    const userResponse = await User.findById(created._id).select(
+    const userResponse = await User.findById(createdUser._id).select(
       "-password -__v"
     );
 
@@ -36,8 +56,8 @@ const registerUser = async (req, res) => {
       .send(
         new ApiResponse(
           201,
-          { user: userResponse, accessToken: at, refreshToken: rt },
-          "User Created Successfully"
+          { user: userResponse, accessToken, refreshToken },
+          "User created successfully"
         )
       );
   } catch (error) {

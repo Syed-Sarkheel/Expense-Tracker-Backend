@@ -7,7 +7,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res
+      return res
         .status(400)
         .send(new ApiResponse(400, null, "Required Fields Missing"));
     }
