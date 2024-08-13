@@ -25,7 +25,6 @@ const registerUser = async (req, res) => {
     const rt = created.generateRefreshToken();
 
     res.cookie("at", at);
-
     res.cookie("rt", rt);
 
     const userResponse = await User.findById(created._id).select(

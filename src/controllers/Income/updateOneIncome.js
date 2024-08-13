@@ -37,11 +37,13 @@ const updateIncome = async (req, res) => {
       { date, amount, source, description },
       { new: true }
     );
+
     res
       .status(200)
       .send(new ApiResponse(200, updated, "Income updated sucessfully"));
   } catch (error) {
     console.log(error);
+
     res
       .status(500)
       .send(new ApiResponse(500, error, "Failed to update Income"));

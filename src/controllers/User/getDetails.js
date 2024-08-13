@@ -34,6 +34,7 @@ const getUser = async (req, res) => {
       );
   } catch (error) {
     console.log(error);
+
     res
       .status(500)
       .send(new ApiResponse(500, null, "Failed to fetch user details!"));
