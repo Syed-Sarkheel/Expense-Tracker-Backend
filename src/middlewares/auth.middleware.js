@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const checkAuth = (req, res, next) => {
   try {
