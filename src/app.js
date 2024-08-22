@@ -19,7 +19,7 @@ app.use(express.json()); //Body Parser
 
 app.use("/", indexRouter);
 
-app.use("/", (req, res, next) => {
+app.use("/*", (req, res, next) => {
   return res
     .status(404)
     .send(new ApiResponse(404, null, "No such route exists"));

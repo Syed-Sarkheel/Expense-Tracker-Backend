@@ -27,7 +27,11 @@ const getAllExpenses = async (req, res) => {
     res
       .status(200)
       .send(
-        new ApiResponse(200, expense, "Total expense fetched successfully!")
+        new ApiResponse(
+          200,
+          expense[0].totalAmount,
+          "Total expense fetched successfully!"
+        )
       );
   } catch (error) {
     console.log(error);

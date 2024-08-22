@@ -26,7 +26,13 @@ const getAllIncomes = async (req, res) => {
 
     res
       .status(200)
-      .send(new ApiResponse(200, income, "Total income fetched successfully!"));
+      .send(
+        new ApiResponse(
+          200,
+          income[0].totalAmount,
+          "Total income fetched successfully!"
+        )
+      );
   } catch (error) {
     console.log(error);
 
