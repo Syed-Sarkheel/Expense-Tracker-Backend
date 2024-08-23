@@ -6,10 +6,10 @@ const incomeSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  amount: { type: Number, required: true },
-  source: { type: String, required: true },
-  description: { type: String },
   date: { type: String, required: true },
+  amount: { type: Number, required: true },
+  category: { type: String, required: true },
+  description: { type: String },
 });
 
 export const Income = mongoose.model("income", incomeSchema);

@@ -3,9 +3,9 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 
 const addIncome = async (req, res) => {
   try {
-    const { date, amount, source, description } = req.body;
+    const { date, amount, category, description } = req.body;
 
-    if (!date || !amount || !source) {
+    if (!date || !amount || !category) {
       return res
         .status(400)
         .send(new ApiResponse(400, null, "Required fields missing"));
@@ -15,7 +15,7 @@ const addIncome = async (req, res) => {
       user: req.user._id,
       date,
       amount,
-      source,
+      category,
       description,
     });
 

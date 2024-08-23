@@ -29,7 +29,7 @@ const getAllExpenses = async (req, res) => {
       .send(
         new ApiResponse(
           200,
-          expense[0].totalAmount,
+          expense[0]?.totalAmount,
           "Total expense fetched successfully!"
         )
       );

@@ -4,9 +4,9 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 const updateIncome = async (req, res) => {
   try {
     const { id } = req.params;
-    const { date, amount, source, description } = req.body;
+    const { date, amount, category, description } = req.body;
 
-    if (!date || !amount || !source) {
+    if (!date || !amount || !category) {
       return res
         .status(400)
         .send(new ApiResponse(400, null, "Required fields missing"));
@@ -34,7 +34,7 @@ const updateIncome = async (req, res) => {
 
     const updated = await Income.findByIdAndUpdate(
       id,
-      { date, amount, source, description },
+      { date, amount, category, description },
       { new: true }
     );
 
