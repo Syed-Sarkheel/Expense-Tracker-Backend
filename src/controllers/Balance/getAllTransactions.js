@@ -31,13 +31,16 @@ const getAllTransactions = async (req, res) => {
     // Combine expenses and income into a single array
     const transactions = [...expensesWithType, ...incomeWithType];
 
+    // Sort transactions by date (descending order: newest first)
+    transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     res
       .status(200)
       .send(
         new ApiResponse(
           200,
           transactions,
-          "All transactions fetched successfully!"
+          "All transactions fetched and sorted successfully!"
         )
       );
   } catch (error) {

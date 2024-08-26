@@ -41,11 +41,19 @@ const confirmOTP = async (req, res) => {
     res.cookie("at", at);
     res.cookie("rt", rt);
 
-    res.status(200).json({
-      message: "User Logged in Successfully",
-      accessToken: at,
-      refreshToken: rt,
-    });
+    const userResponse = await User.findById(exists._id).select(
+      "-password -__v"
+    );
+
+    res
+      .status(200)
+      .send(
+        new ApiResponse(
+          201,
+          { user: userResponse, accessToken: at, refreshToken: rt },
+          "User logged in successfully"
+        )
+      );
   } catch (error) {
     console.log(error);
     res.status(500).send(new ApiResponse(500, error, "error"));
